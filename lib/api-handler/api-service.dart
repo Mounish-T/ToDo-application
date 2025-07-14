@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js_interop';
 
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
@@ -26,6 +25,7 @@ class APIService {
       // print("Server is not connected");
       showCustomToast(context, "Server is not Connected", "", "", "");
     }
+    return null;
   }
 
   Future<void> postData(BuildContext context, String data) async {
