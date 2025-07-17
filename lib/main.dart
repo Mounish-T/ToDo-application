@@ -74,12 +74,13 @@ class _MyAppState extends State<MyApp> {
             isBottomSheet = false;
           });
         },
+        // child: SingleChildScrollView(
         child: data.isEmpty
             ? Center(
                 child: Text(
-                "Currently, you have no pending tasks!!!",
-                style: TextStyle(fontSize: 20),
-              ))
+              "Currently, you have no pending tasks!!!",
+              style: TextStyle(fontSize: 17),
+            ))
             : Padding(
                 padding: const EdgeInsets.only(top: 8, left: 5),
                 child: ListView.builder(
@@ -178,6 +179,7 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
               ),
+        // ),
       ),
       floatingActionButton: !isBottomSheet
           ? FloatingActionButton(
@@ -198,53 +200,22 @@ class _MyAppState extends State<MyApp> {
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
                   height: 130,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          autofocus: true,
-                          onSubmitted: (value) async {
-                            if (taskInput.text.trim() == "")
-                              showCustomToast(context, "Task can't be Empty!!!",
-                                  "", "", "");
-                            else {
-                              isAddData
-                                  ? await api.postData(context, value)
-                                  : await api.updateData(
-                                      context, selectedId, value, selectedData);
-                            }
-                            setState(() {
-                              isBottomSheet = false;
-                              isAddData = true;
-                              taskInput.text = "";
-                              loadData();
-                            });
-                          },
-                          controller: taskInput,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              focusColor: Colors.amber),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            autofocus: true,
+                            onSubmitted: (value) async {
                               if (taskInput.text.trim() == "")
                                 showCustomToast(context,
                                     "Task can't be Empty!!!", "", "", "");
                               else {
                                 isAddData
-                                    ? await api.postData(
-                                        context, taskInput.text)
+                                    ? await api.postData(context, value)
                                     : await api.updateData(context, selectedId,
-                                        taskInput.text, selectedData);
+                                        value, selectedData);
                               }
                               setState(() {
                                 isBottomSheet = false;
@@ -253,31 +224,69 @@ class _MyAppState extends State<MyApp> {
                                 loadData();
                               });
                             },
-                            child: Text(
-                              isAddData ? "Add" : "Update",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.teal),
+                            controller: taskInput,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                focusColor: Colors.amber),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                isBottomSheet = false;
-                                isAddData = true;
-                                taskInput.text = "";
-                              });
-                            },
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(fontSize: 17),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (taskInput.text.trim() == "")
+                                  showCustomToast(context,
+                                      "Task can't be Empty!!!", "", "", "");
+                                else {
+                                  isAddData
+                                      ? await api.postData(
+                                          context, taskInput.text)
+                                      : await api.updateData(
+                                          context,
+                                          selectedId,
+                                          taskInput.text,
+                                          selectedData);
+                                }
+                                setState(() {
+                                  isBottomSheet = false;
+                                  isAddData = true;
+                                  taskInput.text = "";
+                                  loadData();
+                                });
+                              },
+                              child: Text(
+                                isAddData ? "Add" : "Update",
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.teal),
                             ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red),
-                          ),
-                        ],
-                      )
-                    ],
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  isBottomSheet = false;
+                                  isAddData = true;
+                                  taskInput.text = "";
+                                });
+                              },
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

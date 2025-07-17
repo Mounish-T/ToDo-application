@@ -6,14 +6,14 @@ import 'package:todo/feature/toast.dart';
 import 'package:todo/model/model.dart';
 
 class APIService {
-  final baseUrl = "http://127.0.0.1:1000/tasks";
+  final baseUrl = "http://192.168.165.244:1000/tasks";
 
   Future<List<dynamic>?> fetchData(BuildContext context) async {
     try {
       final res = await http.get(Uri.parse(baseUrl));
       if (res.statusCode == 200) {
         if (res.body.contains("message")) {
-          // print("No available tasks");
+          print("No available tasks");
         } else {
           List<dynamic> data = jsonDecode(res.body.toString());
           // print("The available tasks are: $data");
